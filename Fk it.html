@@ -37,6 +37,7 @@
     font-weight: bold;
     text-decoration: none;
     display: inline-block;
+    padding: 6px 14px
 }
 
         .login-btn:hover {
@@ -124,7 +125,7 @@
 }
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Tahoma,sans-serif;background:#080b14;color:#f7f8ff;min-height:100vh}
 .bg{position:fixed;inset:0;background:radial-gradient(circle at 20% 10%,#35206a55,transparent 35%),radial-gradient(circle at 80% 90%,#005c7a55,transparent 35%);pointer-events:none}
-.wrap{max-width:1050px;margin:auto;padding:28px 18px;position:relative}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.wrap{max-width:1050px;margin:0 auto;padding:70px 18px 28px;position:relative}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
 .logo{font-weight:900;font-size:22px;letter-spacing:.5px}.badge{font-size:12px;background:#151a2b;border:1px solid #292f49;padding:8px 12px;border-radius:999px;color:#aeb8d8}
 .card{background:#111625cc;border:1px solid #252d46;border-radius:24px;padding:24px;box-shadow:0 18px 60px #0008;backdrop-filter:blur(12px)}
 h1{font-size:42px;margin:4px 0 10px;line-height:1.1}p{color:#aeb7cf}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
@@ -158,6 +159,7 @@ button{border:0;border-radius:13px;padding:14px 18px;font-weight:800;font-size:1
 <section id="lobby" class="card hidden">
 <div class="center"><div class="muted" id="lblRoomCode">رمز الغرفة</div><div id="roomCode" class="room">------</div></div>
 <div class="players"><div class="player"><div><b id="p1">Player 1</b><div class="muted">أنت</div></div><div class="score" id="s1">0</div></div><div class="player"><div><b id="p2">في الانتظار…</b><div class="muted">الخصم</div></div><div class="score" id="s2">0</div></div></div>
+<div class="players"><div class="player"><div><b id="p1">Player 1</b><div class="muted" id="lblYou1">أنت</div></div><div class="score" id="s1">0</div></div><div class="player"><div><b id="p2">في الانتظار…</b><div class="muted" id="lblOpp1">الخصم</div></div><div class="score" id="s2">0</div></div></div>
 <p class="status" id="lobbyStatus">جارٍ التحضير…</p>
 <div class="actions"><button id="startBtn" onclick="startGame()" disabled>ابدأ المباراة</button><button class="secondary" id="btnCopy" onclick="copyRoom()">نسخ رمز الغرفة</button><button class="danger" id="btnExit1" onclick="location.reload()">خروج</button></div>
 </section>
@@ -177,7 +179,7 @@ button{border:0;border-radius:13px;padding:14px 18px;font-weight:800;font-size:1
 
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <script>
-const QUESTION_BANK=[
+const AR_QUESTION_BANK=[
   ["ما العدد التالي؟ 2، 6، 12، 20، 30، ؟",["36","40","42","44"],2],
   ["إذا كان كل القطط حيوانات، وبعض الحيوانات سوداء، هل يلزم أن بعض القطط سوداء؟",["نعم دائمًا","لا، ليس بالضرورة","كلها سوداء","لا توجد قطط"],1],
   ["لديك 3 مفاتيح خارج غرفة ومصباح داخلها. يمكنك دخول الغرفة مرة واحدة. كيف تعرف المفتاح الصحيح؟",["تشغّل الأول فقط","تشغّل الأول ثم تطفئه وتشغّل الثاني وتفحص الحرارة","تشغّل الثلاثة","مستحيل"],1],
@@ -681,6 +683,81 @@ const QUESTION_BANK=[
   
 ];
 
+const EN_QUESTION_BANK=[
+["What is 15% of 240?", ["24", "30", "36", "40"],3],
+["Which country has the largest land area in the world?", ["Canada", "China", "United States", "Russia"],4],
+["Which planet has the most moons currently known?", ["Jupiter", "Saturn", "Uranus", "Neptune"],2],
+["What is the capital of New Zealand?", ["Auckland", "Christchurch", "Wellington", "Hamilton"],3],
+["What is 12 × 12?", ["124", "134", "144", "154"],3],
+["Which sport uses a puck?", ["Cricket", "Ice hockey", "Baseball", "Rugby"],2],
+["Which gas makes up most of Earth's atmosphere?", ["Oxygen", "Carbon dioxide", "Nitrogen", "Hydrogen"],3],
+["What is the square root of 225?", ["12", "15", "18", "25"],2],
+["Which ocean is the largest?", ["Atlantic", "Indian", "Pacific", "Arctic"],3],
+["What is the chemical symbol for gold?", ["Ag", "Gd", "Au", "Go"],3],
+["How many players are on a soccer team on the field at one time?", ["9", "10", "11", "12"],3],
+["Which country is known as the Land of the Rising Sun?", ["China", "Japan", "Thailand", "South Korea"],2],
+["If 3x + 5 = 20, what is x?", ["3", "5", "7", "8"],2],
+["Which organ pumps blood around the body?", ["Heart", "Liver", "Brain", "Kidney"],1],
+["What is the currency of the United Kingdom?", ["Euro", "Dollar", "Pound sterling", "Franc"],3],
+["What is the next number: 2, 4, 8, 16, ___?", ["20", "24", "30", "32"],4],
+["Which animal is the largest living land animal?", ["Rhinoceros", "Hippopotamus", "African elephant", "Giraffe"],3],
+["Which movie features the character Darth Vader?", ["Star Trek", "Star Wars", "Avatar", "The Matrix"],2],
+["What is 3/4 expressed as a percentage?", ["50%", "65%", "75%", "80%"],3],
+["Which is the smallest country in the world?", ["Monaco", "Malta", "Vatican City", "Luxembourg"],3],
+["What is the hardest natural substance?", ["Iron", "Diamond", "Quartz", "Titanium"],2],
+["Who was the first president of the United States?", ["Abraham Lincoln", "Thomas Jefferson", "George Washington", "John Adams"],3],
+["Which instrument has 88 keys?", ["Violin", "Piano", "Guitar", "Organ"],2],
+["Which country is home to the Great Barrier Reef?", ["Australia", "Brazil", "Indonesia", "South Africa"],1],
+["What is the chemical symbol for sodium?", ["S", "So", "Na", "Sd"],3],
+["In which year did World War II end?", ["1943", "1944", "1945", "1946"],3],
+["A car travels 240 km in 4 hours. What is its average speed?", ["50 km/h", "60 km/h", "70 km/h", "80 km/h"],2],
+["Which planet is known as the Red Planet?", ["Venus", "Mars", "Jupiter", "Mercury"],2],
+["Which country has the city of Istanbul?", ["Greece", "Turkey", "Bulgaria", "Romania"],2],
+["How many bones are in a typical adult human body?", ["186", "196", "206", "216"],3],
+["What is the value of 2⁶?", ["32", "48", "64", "128"],3],
+["Which country gifted the Statue of Liberty to the United States?", ["France", "Spain", "Italy", "Britain"],1],
+["Which blood type is considered the universal red-cell donor?", ["AB+", "O+", "O-", "AB-"],3],
+["What is the perimeter of a square with sides of 9 cm?", ["81 cm", "27 cm", "36 cm", "81 cm"],3],
+["Which desert is the largest hot desert in the world?", ["Gobi", "Arabian", "Kalahari", "Sahara"],4],
+["What is the fastest land animal?", ["Lion", "Horse", "Cheetah", "Leopard"],3],
+["What is 20% of 350?", ["50", "60", "70", "80"],3],
+["Which is the largest planet in our solar system?", ["Saturn", "Jupiter", "Neptune", "Uranus"],2],
+["What is the capital of Canada?", ["Toronto", "Montreal", "Vancouver", "Ottawa"],4],
+["What is 7 × 8 + 4?", ["56", "60", "64", "68"],2],
+["What is 7 × 8 + 4?", ["60", "68", "64", "56"],1],
+["What is 7 × 8 + 4?", ["70", "64", "60", "58"],3],
+["What is 7 × 8 + 4?", ["62", "60", "64", "66"],2],
+["What is 7 × 8 + 4?", ["50", "54", "56", "60"],4],
+["What is 7 × 8 + 4?", ["60", "58", "64", "52"],1],
+["What is 7 × 8 + 4?", ["70", "72", "60", "62"],3],
+["What is 7 × 8 + 4?", ["65", "50", "55", "60"],4],
+["What is 7 × 8 + 4?", ["60", "80", "90", "70"],1],
+["What is 7 × 8 + 4?", ["60", "50", "40", "30"],1],
+["What is 7 × 8 + 4?", ["70", "50", "55", "60"],4],
+["Which element has the atomic number 1?", ["Oxygen", "Helium", "Hydrogen", "Carbon"],3],
+["Which country has the most natural lakes?", ["Russia", "Canada", "Brazil", "United States"],2],
+["What is the probability of rolling a 6 with a standard six-sided die?", ["1/2", "1/3", "1/6", "1/12"],3],
+["What is the probability of rolling a 6 with a standard six-sided die?", ["1/6", "1/2", "1/5", "1/4"],1],
+["What is the probability of rolling a 6 with a standard six-sided die?", ["1/7", "1/8", "1/6", "1/5"],3],
+["What is the probability of rolling a 6 with a standard six-sided die?", ["1/2", "1/3", "1/4", "1/6"],4],
+["What is the probability of rolling a 6 with a standard six-sided die?", ["1/4", "1/12", "1/3", "1/6"],4],
+["What is the probability of rolling a 6 with a standard six-sided die?", ["1/6", "2/6", "3/6", "6/6"],1],
+["What is the probability of rolling a 6 with a standard six-sided die?", ["6/6", "5/6", "1/2", "1/6"],4],
+["Which ocean is the deepest?", ["Atlantic", "Indian", "Pacific", "Southern"],3],
+["What is the Roman numeral XL?", ["30", "40", "50", "60"],2],
+["Which country won the first FIFA World Cup?", ["Brazil", "Argentina", "Uruguay", "Germany"],3],
+["What is H₂O?", ["Hydrogen peroxide", "Oxygen", "Water", "Hydrogen"],3],
+["If a $100 item is discounted by 30%, what is the new price?", ["$60", "$65", "$70", "$75"],3],
+["What is the largest organ of the human body?", ["Liver", "Skin", "Brain", "Heart"],2],
+["How many degrees are in a triangle's interior angles combined?", ["90°", "180°", "270°", "360°"],2],
+["Which country was formerly known as Persia?", ["Iraq", "Iran", "Syria", "Turkey"],2],
+["What is the fastest bird in a dive?", ["Eagle", "Peregrine falcon", "Hawk", "Albatross"],2],
+["What is 144 ÷ 12?", ["10", "11", "12", "14"],3],
+["Which African country was historically known as Abyssinia?", ["Ethiopia", "Sudan", "Somalia", "Kenya"],1],
+["How many strings does a standard violin have?", ["3", "4", "5", "6"],2],
+["Which force keeps planets in orbit around the Sun?", ["Magnetism", "Friction", "Gravity", "Electricity"],3],
+];
+
 let currentLang = 'ar';
 
 
@@ -703,7 +780,27 @@ const i18n = {
     btnCopy: "نسخ رمز الغرفة",
     btnExit: "خروج",
     btnPlayAgain: "لعب مرة ثانية",
-    lblFinalResult: "النتيجة النهائية"
+    lblFinalResult: "النتيجة النهائية",
+    creatingRoom: "جارٍ إنشاء الغرفة…",
+    roomReady: "جاهز! انتظر انضمام اللاعب الثاني…",
+    idTaken: "رمز الغرفة مستخدم حاليًا، اضغط خروج وجرب رمز/غرفة جديدة",
+    connError: "خطأ بالاتصال، تأكد من اتصالك بالإنترنت",
+    connecting: "جارٍ الاتصال بالغرفة ",
+    joinFailed: "تعذر الاتصال، تأكد من رمز الغرفة والإنترنت",
+    enterRoomFirst: "أدخل رمز الغرفة أولاً",
+    oppJoined: "اللاعب الثاني انضم! اضغط ابدأ المباراة",
+    waitingHost: "تم الاتصال! بانتظار أن يبدأ صاحب الغرفة المباراة…",
+    disconnected: "انقطع الاتصال بالخصم",
+    noConn: "لا يوجد اتصال باللاعب الثاني بعد",
+    copied: "تم نسخ رمز الغرفة: ",
+    qCounter: (i, n) => `السؤال ${i} / ${n}`,
+    correct: (p) => `صحيح! +${p} نقطة ⚡`,
+    timeUp: "انتهى الوقت",
+    wrong: "إجابة خاطئة",
+    won: "فزت!", lost: "خسرت الجولة", tie: "تعادل!", doneSolo: "أنهيت جولتك",
+    yourScore: (s, m) => `نتيجتك: ${s} من ${m}`,
+    oppScoreLine: (n, s) => `${n}: ${s} نقطة`,
+    oppNotDone: (n) => `${n}: لم ينهِ الجولة بعد…`
   },
   en: {
     badge: "1v1 • Speed + Accuracy",
@@ -723,24 +820,41 @@ const i18n = {
     btnCopy: "Copy Room Code",
     btnExit: "Exit",
     btnPlayAgain: "Play Again",
-    lblFinalResult: "Final Result"
+    lblFinalResult: "Final Result",
+    creatingRoom: "Creating room…",
+    roomReady: "Ready! Waiting for player 2 to join…",
+    idTaken: "That room code is in use. Press Exit and try a new one",
+    connError: "Connection error, check your internet",
+    connecting: "Connecting to room ",
+    joinFailed: "Could not connect, check the room code and your internet",
+    enterRoomFirst: "Enter the room code first",
+    oppJoined: "Player 2 joined! Press Start Match",
+    waitingHost: "Connected! Waiting for the host to start…",
+    disconnected: "Opponent disconnected",
+    noConn: "No connection to player 2 yet",
+    copied: "Room code copied: ",
+    qCounter: (i, n) => `Question ${i} / ${n}`,
+    correct: (p) => `Correct! +${p} pts ⚡`,
+    timeUp: "Time's up",
+    wrong: "Wrong answer",
+    won: "You won!", lost: "You lost", tie: "Draw!", doneSolo: "You finished your round",
+    yourScore: (s, m) => `Your score: ${s} of ${m}`,
+    oppScoreLine: (n, s) => `${n}: ${s} pts`,
+    oppNotDone: (n) => `${n}: hasn't finished yet…`
   }
 };
 
+function setLanguage(l){
+    currentLang = l
+    document.documentElement.lang = l;
+    document.documentElement.dir = (l === 'ar') ? 'rtl' : 'ltr';
+    document.getElementById('langToggleBtn').textContent = (l === 'ar') ? 'English' : 'العربية';
+    updateStaticTexts();
+}
+
 
 function toggleLanguage() {
-  if (currentLang === 'en') {
-    currentLang = 'ar';
-    document.documentElement.lang = 'ar';
-    document.documentElement.dir = 'rtl';
-    document.getElementById('langToggleBtn').textContent = 'English';
-  } else {
-    currentLang = 'en';
-    document.documentElement.lang = 'en';
-    document.documentElement.dir = 'ltr';
-    document.getElementById('langToggleBtn').textContent = 'العربية';
-  }
-  updateStaticTexts();
+  setLanguage(currentLang === 'en' ? 'ar' : 'en');
 }
 
 
@@ -763,13 +877,21 @@ function updateStaticTexts() {
   if(document.getElementById('btnExit3')) document.getElementById('btnExit3').textContent = t.btnExit;
   if(document.getElementById('btnPlayAgain')) document.getElementById('btnPlayAgain').textContent = t.btnPlayAgain;
   if(document.getElementById('lblFinalResult')) document.getElementById('lblFinalResult').textContent = t.lblFinalResult;
+  if($("lblYou1")) $("lblYou1").textContent = t.lblYou;
+  if($("lblOpp1")) $("lblOpp1").textContent = t.lblOpp;
+  if($("p1")) $("p1").textContent = playerName || t.lblYou;
+  if($("p2")) $("p2").textContent = oppName || t.waitingOpp;
+  if($("g1")) $("g1").textContent = playerName || t.lblYou;
+  if($("g2")) $("g2").textContent = oppName || t.lblOpp;
+  if(questions.length && $("counter")) $("counter").textContent = t.qCounter(idx+1, questions.length);
 }
 function shuffle(arr){let a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function bankForLang(l){return l === 'en' ? EN_QUESTION_BANK : AR_QUESTION_BANK;}
 let questions=[];
 const QUESTIONS_PER_GAME=20;
 const TIME_PER_QUESTION=18;
 let playerName="",room="",score=0,oppScore=0,idx=0,timer=null,time=TIME_PER_QUESTION;
-let peer=null,conn=null,isHost=false,oppName="الخصم",myFinished=false,oppFinished=false,oppFinalScore=0;
+let peer=null,conn=null,isHost=false,oppName="",myFinished=false,oppFinished=false,oppFinalScore=0;
 
 function $(id){return document.getElementById(id)}
 function show(id){["home","lobby","game","end"].forEach(x=>$(x).classList.add("hidden"));$(id).classList.remove("hidden")}
@@ -781,26 +903,26 @@ playerName=$("name").value.trim()||"Player 1";
 room=Math.floor(100000+Math.random()*900000)+"";
 isHost=true;
 enterLobby();
-setLobbyStatus("جارٍ إنشاء الغرفة…");
+setLobbyStatus(i18n[currentLang].creatingRoom);
 peer=new Peer(roomPeerId(room));
-peer.on('open',()=>{setLobbyStatus("جاهز! انتظر انضمام اللاعب الثاني…")});
+peer.on('open',()=>{setLobbyStatus(i18n[currentLang].roomReady)});
 peer.on('connection',(c)=>{conn=c;setupConnHandlers()});
 peer.on('error',(err)=>{
-if(err.type==='unavailable-id'){setLobbyStatus("رمز الغرفة مستخدم حاليًا، اضغط خروج وجرب رمز/غرفة جديدة");}
-else{setLobbyStatus("خطأ بالاتصال ("+err.type+")، تأكد من اتصالك بالإنترنت");}
+if(err.type==='unavailable-id'){setLobbyStatus(i18n[currentLang].idTaken);}
+else{setLobbyStatus(i18n[currentLang].connError+"("+err.type+")");}
 });
 }
 
 function joinRoom(){
 playerName=$("name").value.trim()||"Player 2";
 room=$("roomInput").value.trim();
-if(!room){alert("أدخل رمز الغرفة أولاً");return}
+if(!room){alert(i18n[currentLang].enterRoomFirst);return}
 isHost=false;
 enterLobby();
-setLobbyStatus("جارٍ الاتصال بالغرفة "+room+"…");
+setLobbyStatus(i18n[currentLang].connecting+room+"...");
 peer=new Peer();
 peer.on('open',()=>{conn=peer.connect(roomPeerId(room));setupConnHandlers()});
-peer.on('error',(err)=>{setLobbyStatus("تعذر الاتصال، تأكد من رمز الغرفة والإنترنت")});
+peer.on('error',(err)=>{setLobbyStatus(i18n[currentLang].joinFailed)});
 }
 
 function setupConnHandlers(){
@@ -808,35 +930,36 @@ conn.on('open',()=>{
 if(!isHost)conn.send({type:'hello',name:playerName});
 });
 conn.on('data',handleData);
-conn.on('close',()=>{setLobbyStatus("انقطع الاتصال بالخصم");$("startBtn").disabled=true});
+conn.on('close',()=>{setLobbyStatus(i18n[currentLang].disconnected);$("startBtn").disabled=true});
 }
 
 function handleData(msg){
 if(msg.type==='hello'){
 oppName=msg.name;$("p2").textContent=oppName;
-let picked=shuffle(QUESTION_BANK).slice(0,Math.min(QUESTIONS_PER_GAME,QUESTION_BANK.length));
+const bank = bankForLang(currentLang);
+let picked=shuffle(bank).slice(0,Math.min(QUESTIONS_PER_GAME,bank.length));
 questions=picked.map(([q,opts,ans])=>{
 let correctText=opts[ans];let newOpts=shuffle(opts);let newAns=newOpts.indexOf(correctText);
 return [q,newOpts,newAns];
 });
-conn.send({type:'welcome',name:playerName,questions});
-setLobbyStatus("اللاعب الثاني انضم! اضغط ابدأ المباراة");
+conn.send({type:'welcome',name:playerName,questions,lang:currentLang});
+setLobbyStatus(i18n[currentLang].oppJoined);
 $("startBtn").disabled=false;
 }
 else if(msg.type==='welcome'){
 oppName=msg.name;$("p2").textContent=oppName;questions=msg.questions;
-setLobbyStatus("تم الاتصال! بانتظار أن يبدأ صاحب الغرفة المباراة…");
+setLobbyStatus(i18n[currentLang].waitingHost);
 }
 else if(msg.type==='start'){beginGameLocal()}
 else if(msg.type==='score'){oppScore=msg.total;$("gs2").textContent=oppScore}
 else if(msg.type==='finished'){oppFinished=true;oppFinalScore=msg.total;maybeShowFinal()}
 }
 
-function enterLobby(){$("roomCode").textContent=room;$("p1").textContent=playerName;$("p2").textContent="في الانتظار…";show("lobby")}
-function copyRoom(){navigator.clipboard?.writeText(room);alert("تم نسخ رمز الغرفة: "+room)}
+function enterLobby(){$("roomCode").textContent=room;$("p1").textContent=playerName;$("p2").textContent=i18n[currentLang].waitingOpp;show("lobby")}
+function copyRoom(){navigator.clipboard?.writeText(room);alert(i18n[currentLang].copied+room)}
 
 function startGame(){
-if(!conn||!conn.open){alert("لا يوجد اتصال باللاعب الثاني بعد");return}
+if(!conn||!conn.open){alert(i18n[currentLang].noConn);return}
 conn.send({type:'start'});
 beginGameLocal();
 }
@@ -851,11 +974,12 @@ function beginGameLocal(){
 idx=0;score=0;oppScore=0;myFinished=false;oppFinished=false;oppFinalScore=0;
 $("gs1").textContent="0";$("gs2").textContent="0";
 $("g1").textContent=playerName;$("g2").textContent=oppName;
+$("langToggleBtn").classList.add("hidden");
 show("game");render();
 }
 
 function render(){
-let [q,opts,ans]=questions[idx];$("counter").textContent=`السؤال ${idx+1} / ${questions.length}`;$("question").textContent=q;$("status").textContent="";
+let [q,opts,ans]=questions[idx];$("counter").textContent=i18n[currentLang].qCounter(idx+1, questions.length);$("question").textContent=q;$("status").textContent="";
 let box=$("choices");box.innerHTML="";
 opts.forEach((o,i)=>{let b=document.createElement("button");b.className="choice";b.textContent=o;b.onclick=()=>answer(i,ans,b);box.appendChild(b)});
 time=TIME_PER_QUESTION;clearInterval(timer);$("bar").style.width="100%";timer=setInterval(()=>{time-=.1;$("bar").style.width=Math.max(0,time/TIME_PER_QUESTION*100)+"%";if(time<=0){clearInterval(timer);answer(-1,ans,null)}},100)
@@ -863,8 +987,8 @@ time=TIME_PER_QUESTION;clearInterval(timer);$("bar").style.width="100%";timer=se
 function answer(chosen,ans,btn){
 clearInterval(timer);document.querySelectorAll(".choice").forEach(b=>b.disabled=true);
 if(btn)btn.classList.add(chosen===ans?"correct":"wrong");
-if(chosen===ans){let pts=Math.max(1,Math.ceil(time));score+=pts;$("gs1").textContent=score;$("status").textContent=`صحيح! +${pts} نقطة ⚡`}
-else{$("status").textContent=chosen===-1?"انتهى الوقت ⏱️":"إجابة خاطئة";}
+if(chosen===ans){let pts=Math.max(1,Math.ceil(time));score+=pts;$("gs1").textContent=score;$("status").textContent=i18n[currentLang].correct(pts)}
+else{$("status").textContent=chosen===-1?i18n[currentLang].timeUp:i18n[currentLang].wrong;}
 if(conn&&conn.open)conn.send({type:'score',total:score});
 setTimeout(()=>{idx++;if(idx>=questions.length)finish();else render()},900)
 }
@@ -877,14 +1001,14 @@ function maybeShowFinal(){
 if(!myFinished)return;
 show("end");
 let maxScore=questions.length*TIME_PER_QUESTION;
-let oppLine=oppFinished?`${oppName}: ${oppFinalScore} نقطة`:`${oppName}: لم ينهِ الجولة بعد…`;
+let oppLine=oppFinished?i18n[currentLang].oppScoreLine(oppName, oppFinalScore):i18n[currentLang].oppNotDone(oppName);
 let resultText;
 if(oppFinished){
-if(score>oppFinalScore)resultText="🏆 فزت!";
-else if(score<oppFinalScore)resultText="😅 خسرت الجولة";
-else resultText="🤝 تعادل!";
-}else{resultText="🎯 أنهيت جولتك"}
+if(score>oppFinalScore)resultText=i18n[currentLang].won;
+else if(score<oppFinalScore)resultText=i18n[currentLang].lost;
+else resultText=i18n[currentLang].tie;
+}else{resultText=i18n[currentLang].doneSolo}
 $("winner").textContent=resultText;
-$("finalScore").innerHTML=`نتيجتك: ${score} من ${maxScore}<br>${oppLine}`;
+$("finalScore").innerHTML="${i18n[currentLang].yourScore(score,maxScore)}<br>${oppLine}";
 }
 </script></body></html>
